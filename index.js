@@ -4,6 +4,7 @@ import cors from 'cors'
 import dotenv from "dotenv"
 
 import holderRoutes from './routes/holders.js'
+import userRoutes from './routes/users.js'
 
 const app = express();
 dotenv.config()
@@ -16,6 +17,7 @@ app.use(cors());
 app.use
 
 app.use('/holders', holderRoutes);
+app.use('/user', userRoutes)
 
 //mongoDB url connection
 // const CONNECTION_URL = 'mongodb+srv://ecafirhan:ecafirhan82013@cluster0.gtgvt.mongodb.net/dbKeychain?retryWrites=true&w=majority';
