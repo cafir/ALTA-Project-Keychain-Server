@@ -14,7 +14,7 @@ export const getHolders = async (req, res) => {
 export const createHolder = async (req, res) => {
     const holder = req.body;
 
-    const newHolder = new PasswordHolder(holder);
+    const newHolder = new PasswordHolder({ ...holder, creator: req.userId, createdAt: new Date().toISOString()});
 
     try {
         await newHolder.save();
