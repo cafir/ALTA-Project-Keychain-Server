@@ -2,8 +2,10 @@ import PasswordHolder from "../models/passwordHolder.js";
 import mongoose from "mongoose"
 
 export const getHolders = async (req, res) => {
+    const creator = req.params.id
+
     try {
-        const passwordHolders = await PasswordHolder.find();
+        const passwordHolders = await PasswordHolder.find({'creator': creator});
 
         res.status(200).json(passwordHolders);
     } catch (error) {
@@ -11,9 +13,9 @@ export const getHolders = async (req, res) => {
     }
 }
 
+
 export const createHolder = async (req, res) => {
     const holder = req.body;
-
     const newHolder = new PasswordHolder({ ...holder, creator: req.userId, createdAt: new Date().toISOString()});
 
     try {
