@@ -6,7 +6,7 @@ import auth from '../middleware/auth.js';
 const router = express.Router();
 
 //read
-router.get('/',  getHolders);
+router.get('/:id',  getHolders);
 //create
 router.post('/', auth, createHolder);
 //update
