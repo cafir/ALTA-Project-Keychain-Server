@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-
+import { cipherText } from "../encryptionHandler.js";
 const postSchema = mongoose.Schema({
     userName: String,
     creator: String,

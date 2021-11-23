@@ -1,5 +1,7 @@
 import PasswordHolder from "../models/passwordHolder.js";
 import mongoose from "mongoose"
+import { cipherText } from "../encryptionHandler.js";
+
 
 export const getHolders = async (req, res) => {
     const creator = req.params.id
@@ -34,8 +36,9 @@ export const getHoldersBySearch = async (req, res) => {
 }
 
 export const createHolder = async (req, res) => {
-    const holder = req.body;
-    const newHolder = new PasswordHolder({ ...holder, creator: req.userId, createdAt: new Date().toISOString()});
+    const {name, password, tags} = req.body;
+    const hashedPassword = cipherText(password)
+    const newHolder = new PasswordHolder({ name, password: hashedPassword, tags, creator: req.userId, createdAt: new Date().toISOString()});
 
     try {
         await newHolder.save();
