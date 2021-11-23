@@ -3,16 +3,35 @@ import mongoose from "mongoose"
 
 export const getHolders = async (req, res) => {
     const creator = req.params.id
+    const { page } = req.query;
 
     try {
-        const passwordHolders = await PasswordHolder.find({'creator': creator});
+        const LIMIT = 8;
+        const startIndex = (Number(page) - 1) * LIMIT
+        const total = await PasswordHolder.countDocuments({})
 
-        res.status(200).json(passwordHolders);
+        const holders = await PasswordHolder.find({'creator': creator}).sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+        
+        res.status(200).json({ data: holders, currentPage: Number(page), numberOfPages: Math.ceil(total/LIMIT) });
+        // res.status(200).json(total);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
 }
 
+export const getHoldersBySearch = async (req, res) => {
+    const creator = req.params.id
+    const { searchQuery, tags } = req.query
+    try {
+        const name = new RegExp(searchQuery, 'i');
+
+        const holders = await PasswordHolder.find({ 'creator': creator, $or: [{ name }, { tags: { $in: tags.split(',') } }] })
+
+        res.json({ data: holders})
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
 
 export const createHolder = async (req, res) => {
     const holder = req.body;
