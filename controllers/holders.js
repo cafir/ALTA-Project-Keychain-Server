@@ -8,9 +8,9 @@ export const getHolders = async (req, res) => {
     const { page } = req.query;
 
     try {
-        const LIMIT = 8;
+        const LIMIT = 5;
         const startIndex = (Number(page) - 1) * LIMIT
-        const total = await PasswordHolder.countDocuments({})
+        const total = await PasswordHolder.countDocuments({'creator': creator})
 
         const holders = await PasswordHolder.find({'creator': creator}).sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
         
