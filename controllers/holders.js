@@ -57,7 +57,7 @@ export const updateHolder = async (req, res) => {
         return res.status(404).send("no holder with that id")
     }
 
-    const updatedHolder = await PasswordHolder.findByIdAndUpdate(_id, {...holder, _id }, { new: true });
+    const updatedHolder = await PasswordHolder.findByIdAndUpdate(_id, {...holder, _id, password: cipherText(holder.password) }, { new: true });
 
     res.json(updatedHolder);
 }
